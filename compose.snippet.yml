@@ -1,0 +1,26 @@
+# Paste this service block into the `mcp-shared` stack (Portainer stack 55,
+# endpoint 3 / Web Server). Matches that stack's conventions:
+#   - no `container_name:` override (Compose default: mcp-shared-mcp-impeccable-1)
+#   - no `networks:` block — rides the stack's implicit default bridge
+#   - internal port 8000, matching the near-universal pattern in this stack
+#   - no `healthcheck:` block — baked into the image via Dockerfile HEALTHCHECK,
+#     same as the stack's other three healthy containers (switchboard, gsd-cloud,
+#     gsd-browser)
+#   - secret via ${} interpolation against stack.env, NOT inline — this stack
+#     already has a plaintext-secrets problem (see the impeccable-mcp build
+#     plan's "adjacent findings"); don't add to it
+#
+# Add IMPECCABLE_MCP_TOKEN=<openssl rand -hex 32> to stack.env before applying.
+
+  mcp-impeccable:
+    image: ghcr.io/jemplayer82/impeccable-mcp:latest
+    restart: unless-stopped
+    shm_size: "512mb"
+    mem_limit: 1536m
+    init: true
+    ports:
+      - "3112:8000"
+    environment:
+      IMPECCABLE_MCP_TOKEN: ${IMPECCABLE_MCP_TOKEN}
+      IMPECCABLE_ALLOW_PRIVATE: ${IMPECCABLE_ALLOW_PRIVATE:-}
+      MAX_CONCURRENCY: ${IMPECCABLE_MAX_CONCURRENCY:-2}

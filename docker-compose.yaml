@@ -1,0 +1,22 @@
+services:
+  impeccable-mcp:
+    image: ghcr.io/jemplayer82/impeccable-mcp:latest
+    container_name: impeccable-mcp
+    restart: unless-stopped
+    shm_size: "512mb"
+    mem_limit: 1536m
+    init: true
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: "8000"
+      IMPECCABLE_MCP_TOKEN: ${IMPECCABLE_MCP_TOKEN}
+      IMPECCABLE_ALLOW_PRIVATE: ${IMPECCABLE_ALLOW_PRIVATE:-}
+      MAX_CONCURRENCY: ${MAX_CONCURRENCY:-2}
+      BROWSER_IDLE_TIMEOUT_MS: ${BROWSER_IDLE_TIMEOUT_MS:-300000}
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

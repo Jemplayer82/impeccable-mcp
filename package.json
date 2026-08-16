@@ -1,0 +1,21 @@
+{
+  "name": "impeccable-mcp",
+  "version": "0.1.0",
+  "description": "MCP server wrapping impeccable's design-lint engine so any agent can scan a URL for UI anti-patterns.",
+  "license": "Apache-2.0",
+  "author": "Landon Ferguson",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "start": "node src/server.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "impeccable": "^3.6.0",
+    "puppeteer": "^25.1.0",
+    "zod": "^4.4.3"
+  }
+}
